@@ -1325,31 +1325,26 @@ About founder START -->
 <!-- =======================
 About founder END -->
 <!-- **************** MAIN CONTENT END **************** -->
-<!-- Chatbot Button -->
-<button class="chatbot-button" id="chatbotBtn">
-    <i class="bi bi-messenger"></i>
-</button>
 
-<!-- Chatbot Window -->
-<!-- Floating Chatbot Button -->
-<button class="chatbot-button" id="chatbotBtn">
-    <i class="bi bi-messenger"></i>
-</button>
+    <!-- Floating Chatbot Button -->
+    <button class="chatbot-button" id="chatbotBtn">
+        <i class="bi bi-messenger"></i>
+    </button>
 
-<!-- Chatbot Window -->
-<div class="chat-window" id="chatWindow">
-    <div class="chat-header">
-        <span>Chatbot</span>
-        <button class="btn-close btn-close-white" id="closeChat"></button>
+    <!-- Chatbot Window -->
+    <div class="chat-window" id="chatWindow">
+        <div class="chat-header">
+            <span>Chatbot</span>
+            <button class="btn-close btn-close-white" id="closeChat"></button>
+        </div>
+        <div class="chat-body" id="chatBody">
+            <div class="message bot-message">Hello! How can I assist you today?</div>
+        </div>
+        <div class="chat-input">
+            <input type="text" id="userInput" placeholder="Type a message...">
+            <button id="sendMessage"><i class="bi bi-send"></i></button>
+        </div>
     </div>
-    <div class="chat-body" id="chatBody">
-        <div class="message bot-message">Hello! How can I assist you today?</div>
-    </div>
-    <div class="chat-input">
-        <input type="text" id="userInput" placeholder="Type a message...">
-        <button id="sendMessage"><i class="bi bi-send"></i></button>
-    </div>
-</div>
 <!-- =======================
 Footer START -->
 <footer class="bg-dark">
@@ -1402,63 +1397,65 @@ Footer END -->
 
 <!-- Vendors -->
 <script src="assets/vendor/tiny-slider/tiny-slider.js"></script>
-<script src="assets/vendor/glightbox/js/glightbox.js"></script>
 <script src="assets/vendor/purecounterjs/dist/purecounter_vanilla.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <!-- Template Functions -->
 <script src="assets/js/functions.js"></script>
+
 <script>
-    $(document).ready(function () {
-        // Ensure jQuery is loaded before handling clicks
+	document.addEventListener("DOMContentLoaded", function () {
+		const chatbotBtn = document.getElementById("chatbotBtn");
+		const chatWindow = document.getElementById("chatWindow");
+		const closeChat = document.getElementById("closeChat");
+		const userInput = document.getElementById("userInput");
+		const sendMessage = document.getElementById("sendMessage");
+		const chatBody = document.getElementById("chatBody");
 
-        // Toggle chat window visibility
-        $("#chatbotBtn").on("click", function () {
-            $("#chatWindow").fadeToggle();
-        });
+		chatbotBtn.addEventListener("click", function () {
+			chatWindow.style.display = chatWindow.style.display === "block" ? "none" : "block";
+		});
 
-        $("#closeChat").on("click", function () {
-            $("#chatWindow").fadeOut();
-        });
+		closeChat.addEventListener("click", function () {
+			chatWindow.style.display = "none";
+		});
 
-        // Function to add messages
-        function addMessage(text, type) {
-            let messageClass = type === "user" ? "user-message" : "bot-message";
-            $("#chatBody").append(`<div class="message ${messageClass}">${text}</div>`);
-            $("#chatBody").scrollTop($("#chatBody")[0].scrollHeight);
-        }
+		function addMessage(text, type) {
+			const message = document.createElement("div");
+			message.classList.add("message", type === "user" ? "user-message" : "bot-message");
+			message.textContent = text;
+			chatBody.appendChild(message);
+			chatBody.scrollTop = chatBody.scrollHeight;
+		}
 
-        // Sample bot responses
-        function getBotResponse(userText) {
-            let responses = {
-                "hello": "Hi there! How can I help you?",
-                "how are you": "I'm just a bot, but I'm doing great! 😊",
-                "what is your name": "I'm ChatBot, your virtual assistant!",
-                "bye": "Goodbye! Have a great day! 👋"
-            };
+		function getBotResponse(userText) {
+			const responses = {
+				"hello": "Hi there! How can I help you?",
+				"how are you": "I'm just a bot, but I'm doing great! 😊",
+				"what is your name": "I'm ChatBot, your virtual assistant!",
+				"bye": "Goodbye! Have a great day! 👋"
+			};
+			return responses[userText.toLowerCase()] || "I'm not sure how to respond to that. 🤔";
+		}
 
-            return responses[userText.toLowerCase()] || "I'm not sure how to respond to that. 🤔";
-        }
+		sendMessage.addEventListener("click", function () {
+			const userText = userInput.value.trim();
+			if (userText) {
+				addMessage(userText, "user");
+				setTimeout(() => {
+					addMessage(getBotResponse(userText), "bot");
+				}, 500);
+				userInput.value = "";
+			}
+		});
 
-        // Send message function
-        $("#sendMessage").on("click", function () {
-            let userText = $("#userInput").val().trim();
-            if (userText) {
-                addMessage(userText, "user");
-                setTimeout(() => {
-                    addMessage(getBotResponse(userText), "bot");
-                }, 500);
-                $("#userInput").val("");
-            }
-        });
-
-        // Send message on Enter key
-        $("#userInput").on("keypress", function (e) {
-            if (e.which === 13) {
-                $("#sendMessage").click();
-            }
-        });
-    });
+		userInput.addEventListener("keypress", function (e) {
+			if (e.key === "Enter") {
+				sendMessage.click();
+			}
+		});
+	});
 </script>
+
+
 </body>
 </html>

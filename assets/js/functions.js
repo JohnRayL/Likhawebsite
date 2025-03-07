@@ -94,7 +94,7 @@ var e = {
         e.toolTipFunc(),
         e.popOverFunc(),
         e.backTotop(),
-        e.lightBox(),
+        // e.lightBox(),
         e.enableIsotope(),
         e.choicesSelect(),
         e.aosFunc(),
@@ -459,18 +459,18 @@ var e = {
     },
     // END: Back to Top
 
-    // START: 10 GLightbox
-    lightBox: function () {
-        var light = e.select('[data-glightbox]');
-        if (e.isVariableDefined(light)) {
-            var lb = GLightbox({
-                selector: '*[data-glightbox]',
-                openEffect: 'fade',
-                closeEffect: 'fade'
-            });
-        }
-    },
-    // END: GLightbox
+    // // START: 10 GLightbox
+    // lightBox: function () {
+    //     var light = e.select('[data-glightbox]');
+    //     if (e.isVariableDefined(light)) {
+    //         var lb = GLightbox({
+    //             selector: '*[data-glightbox]',
+    //             openEffect: 'fade',
+    //             closeEffect: 'fade'
+    //         });
+    //     }
+    // },
+    // // END: GLightbox
 
     // START: 11 Isotope
     enableIsotope: function () {
